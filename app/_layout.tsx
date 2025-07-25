@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { SafeAreaView, StatusBar } from 'react-native';
-import { FontAwesome, MaterialIcons, Feather } from '@expo/vector-icons';
+import { StatusBar } from 'react-native';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView as SafeAreaViewContext } from 'react-native-safe-area-context';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
