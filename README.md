@@ -6,9 +6,9 @@ Postly is a modern social app built with Expo, React Native, and TypeScript. It 
 
 
 ## Video - Quick Tour
-[![App Demo](https://img.youtube.com/vi/Rz2k8aN8eoc/0.jpg)](https://www.youtube.com/watch?v=Rz2k8aN8eoc)
+[![App Demo](https://img.youtube.com/vi/7-fGlh6N_sc/0.jpg)](https://youtube.com/shorts/7-fGlh6N_sc?feature=share)
 
-📱 **[Watch on YouTube](https://www.youtube.com/watch?v=Rz2k8aN8eoc)**
+📱 **[Watch on YouTube](https://youtube.com/shorts/7-fGlh6N_sc?feature=share)**
 
 ## Table of Contents
 
