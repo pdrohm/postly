@@ -5,9 +5,22 @@ import type { Post } from '../../types/post';
 import PostCard from '../../components/PostCard/PostCard';
 import { PostCardSkeleton } from '../../components/PostCard/PostCardSkeleton';
 import { homeScreenStyles } from './styles/HomeScreen.styles';
+import CommentSection from '../../components/CommentSection/CommentSection';
 
 const HomeScreen: React.FC = () => {
   const { posts, isLoading, isError, refetch } = useHomeScreen();
+  const [commentSectionVisible, setCommentSectionVisible] = React.useState(false);
+  const [selectedPostId, setSelectedPostId] = React.useState<string | null>(null);
+
+  const handleCommentPress = (postId: string) => {
+    setSelectedPostId(postId);
+    setCommentSectionVisible(true);
+  };
+
+  const handleCloseCommentSection = () => {
+    setCommentSectionVisible(false);
+    setSelectedPostId(null);
+  };
 
   if (isLoading) {
     return (
@@ -31,13 +44,20 @@ const HomeScreen: React.FC = () => {
   }
 
   return (
-    <FlatList
-      style={homeScreenStyles.container}
-      data={posts}
-      keyExtractor={(item: Post) => item.id}
-      renderItem={({ item }) => <PostCard post={item} />}
-      contentContainerStyle={homeScreenStyles.listContent}
-    />
+    <>
+      <FlatList
+        style={homeScreenStyles.container}
+        data={posts}
+        keyExtractor={(item: Post) => item.id}
+        renderItem={({ item }) => <PostCard post={item} onCommentPress={handleCommentPress} />}
+        contentContainerStyle={homeScreenStyles.listContent}
+      />
+      <CommentSection
+        visible={commentSectionVisible}
+        onClose={handleCloseCommentSection}
+        postId={selectedPostId || ''}
+      />
+    </>
   );
 };
 

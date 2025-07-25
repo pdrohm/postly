@@ -17,6 +17,8 @@ export function usePostCard({post}: {post: Post}) {
     const isSaved = saved[post.id] ?? post.saved;
     const likeCount = likeCounts[post.id] ?? post.likes ?? 0;
     const commentCount = (comments[post.id] ?? post.comments);
+    const commentsForPost = useFeedStore((s) => s.getComments(post.id));
+    const latestComment = commentsForPost.length > 0 ? commentsForPost[commentsForPost.length - 1] : undefined;
     const [imageError, setImageError] = useState(false);  
 
     const avatarUrl = `https://i.pravatar.cc/304?u=${post.id}`;
@@ -37,6 +39,6 @@ export function usePostCard({post}: {post: Post}) {
     addComment,
     fallbackImage,
     avatarUrl,
-
+    latestComment,
   };
 }

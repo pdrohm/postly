@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import type { Post } from '../types/post';
+import type { Post, Comment } from '../types/post';
 
-interface PostActionsState {
+export interface PostActionsState {
   posts: Post[];
   setPosts: (posts: Post[]) => void;
   setPostsAndSaved: (posts: Post[]) => void;
@@ -10,9 +10,11 @@ interface PostActionsState {
   comments: Record<string, number>;
   likeCounts: Record<string, number>;
   liked: Record<string, boolean>;
+  commentsByPost: Record<string, Comment[]>;
   toggleLike: (id: string) => void;
   toggleSave: (id: string) => void;
-  addComment: (id: string) => void;
+  addComment: (comment: Comment) => void;
+  getComments: (postId: string) => Comment[];
 }
 
 export const useFeedStore = create<PostActionsState>((set, get) => ({
@@ -38,6 +40,7 @@ export const useFeedStore = create<PostActionsState>((set, get) => ({
   comments: {},
   likeCounts: {},
   liked: {},
+  commentsByPost: {},
   toggleLike: (id) => set((state) => {
     const isLiked = state.liked[id] ?? false;
     const currentCount = state.likeCounts[id] ?? 0;
@@ -52,7 +55,18 @@ export const useFeedStore = create<PostActionsState>((set, get) => ({
   toggleSave: (id) => set((state) => ({
     saved: { ...state.saved, [id]: !state.saved[id] },
   })),
-  addComment: (id) => set((state) => ({
-    comments: { ...state.comments, [id]: (state.comments[id] || 0) + 1 },
+  addComment: (comment) => set((state) => ({
+    commentsByPost: {
+      ...state.commentsByPost,
+      [comment.postId]: [
+        ...(state.commentsByPost[comment.postId] || []),
+        comment,
+      ],
+    },
+    comments: {
+      ...state.comments,
+      [comment.postId]: (state.comments[comment.postId] || 0) + 1,
+    },
   })),
+  getComments: (postId) => get().commentsByPost[postId] || [],
 })); 

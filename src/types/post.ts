@@ -10,4 +10,13 @@ export interface Post {
   saved: boolean;
   location: string;
   id: string;
+}
+
+export interface Comment {
+  id: string;
+  postId: string;
+  user: string;
+  avatar: string;
+  text: string;
+  createdAt: string;
 } 

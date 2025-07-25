@@ -1,20 +1,28 @@
-import React from "react";
-import { View, Text, Image, Pressable } from "react-native";
+import React, { useState } from "react";
+import { View } from "react-native";
 import type { Post } from "../../types/post";
 import { postCardStyles } from "./styles/PostCard.styles";
-import moment from "moment";
-import { FontAwesome, Feather, MaterialIcons } from "@expo/vector-icons";
 import { usePostCard } from "./hooks/usePostCard";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Gesture } from "react-native-gesture-handler";
+import PostCardHeader from "./PostCardHeader";
+import { usePostCardHeader } from "./hooks/usePostCardHeader";
+import PostCardImage from "./PostCardImage";
+import { usePostCardImage } from "./hooks/usePostCardImage";
+import PostCardActions from "./PostCardActions";
+import { usePostCardActions } from "./hooks/usePostCardActions";
+import PostCardFooter from "./PostCardFooter";
+import { usePostCardFooter } from "./hooks/usePostCardFooter";
 
 interface PostCardProps {
   post: Post;
+  onCommentPress?: (postId: string) => void;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ post }) => {
+const PostCard: React.FC<PostCardProps> = ({ post, onCommentPress }) => {
   const {
     isLiked,
     isSaved,
+    likeCount,
     commentCount,
     toggleLike,
     toggleSave,
@@ -24,8 +32,10 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     setImageError,
     fallbackImage,
     imageUrl,
-    likeCount,
+    latestComment,
   } = usePostCard({ post });
+
+  const headerProps = usePostCardHeader(post);
 
   const doubleTapGesture = Gesture.Tap()
     .numberOfTaps(2)
@@ -33,66 +43,33 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
       toggleLike(post.id);
     });
 
+  const postCardImageProps = usePostCardImage({
+    imageUrl,
+    fallbackImage,
+    imageError,
+    setImageError,
+    postName: post.name,
+    doubleTapGesture,
+  });
+
+  const postCardActionsProps = usePostCardActions({
+    isLiked,
+    isSaved,
+    likeCount,
+    commentCount,
+    onLikePress: () => toggleLike(post.id),
+    onCommentPress: () => onCommentPress && onCommentPress(post.id),
+    onSavePress: () => toggleSave(post.id),
+  });
+
+  const postCardFooterProps = usePostCardFooter(post, latestComment);
+
   return (
     <View style={postCardStyles.container}>
-      <View style={postCardStyles.header}>
-        <Image
-          source={{ uri: avatarUrl }}
-          style={postCardStyles.avatar}
-          accessibilityLabel={`${post.name} profile picture`}
-        />
-        <Text style={postCardStyles.name}>{post.name}</Text>
-      </View>
-      <GestureDetector gesture={doubleTapGesture}>
-        <Image
-          source={{ uri: imageError ? fallbackImage : imageUrl }}
-          style={postCardStyles.image}
-          accessibilityLabel={`Post image by ${post.name}`}
-          onError={(e) => {
-            setImageError(true);
-            console.error("Image failed to load:", imageUrl, e.nativeEvent);
-          }}
-        />
-      </GestureDetector>
-      <View style={postCardStyles.actions}>
-        <Pressable
-          onPress={() => toggleLike(post.id)}
-          accessibilityLabel={isLiked ? "Unlike post" : "Like post"}
-          accessibilityRole="button"
-        >
-          <FontAwesome
-            name={isLiked ? "heart" : "heart-o"}
-            size={22}
-            color={isLiked ? "#e74c3c" : "#222"}
-          />
-        </Pressable>
-        <Text style={postCardStyles.actionText}>{likeCount}</Text>
-        <Pressable
-          onPress={() => addComment(post.id)}
-          accessibilityLabel="Add comment"
-          accessibilityRole="button"
-        >
-          <Feather name="message-circle" size={22} color="#222" />
-        </Pressable>
-        <Pressable
-          onPress={() => toggleSave(post.id)}
-          accessibilityLabel={isSaved ? "Unsave post" : "Save post"}
-          accessibilityRole="button"
-        >
-          <MaterialIcons
-            name={isSaved ? "bookmark" : "bookmark-outline"}
-            size={22}
-            color={isSaved ? "#2980b9" : "#222"}
-          />
-        </Pressable>
-      </View>
-      <View style={postCardStyles.footer}>
-        <Text style={postCardStyles.name}>{post.name}</Text>
-        <Text style={postCardStyles.description}>{post.description}</Text>
-        <Text style={postCardStyles.createdAt}>
-          {moment(post.createdAt).fromNow()}
-        </Text>
-      </View>
+      <PostCardHeader {...headerProps} />
+      <PostCardImage {...postCardImageProps} />
+      <PostCardActions {...postCardActionsProps} />
+      <PostCardFooter {...postCardFooterProps} />
     </View>
   );
 };
