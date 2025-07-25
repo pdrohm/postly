@@ -24,6 +24,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     setImageError,
     fallbackImage,
     imageUrl,
+    likeCount,
   } = usePostCard({ post });
 
   const doubleTapGesture = Gesture.Tap()
@@ -65,7 +66,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
             color={isLiked ? "#e74c3c" : "#222"}
           />
         </Pressable>
-        <Text style={postCardStyles.actionText}>{commentCount}</Text>
+        <Text style={postCardStyles.actionText}>{likeCount}</Text>
         <Pressable
           onPress={() => addComment(post.id)}
           accessibilityLabel="Add comment"

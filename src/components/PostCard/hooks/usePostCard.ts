@@ -4,7 +4,8 @@ import { Post } from "../../../types/post";
 
 export function usePostCard({post}: {post: Post}) {
     const {
-        likes,
+        likeCounts,
+        liked,
         saved,
         comments,
         toggleLike,
@@ -12,8 +13,9 @@ export function usePostCard({post}: {post: Post}) {
         addComment,
       } = useFeedStore();
     
-    const isLiked = likes[post.id] ?? post.liked;
+    const isLiked = liked[post.id] ?? post.liked;
     const isSaved = saved[post.id] ?? post.saved;
+    const likeCount = likeCounts[post.id] ?? post.likes ?? 0;
     const commentCount = (comments[post.id] ?? post.comments);
     const [imageError, setImageError] = useState(false);  
 
@@ -25,6 +27,7 @@ export function usePostCard({post}: {post: Post}) {
   return {
     isLiked,
     isSaved,
+    likeCount,
     commentCount,
     imageUrl,
     imageError,
