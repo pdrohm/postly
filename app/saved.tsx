@@ -1,10 +1,8 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import SavedScreen from '../src/screens/SavedScreen/SavedScreen';
 
-export default function SavedScreen() {
+export default function Saved() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Saved Posts will appear here.</Text>
-    </View>
-  );
+    <SavedScreen />
+  )
 } 

@@ -21,7 +21,7 @@ export const useFeedStore = create<PostActionsState>((set) => ({
   })),
   addComment: (id) => set((state) => ({
     comments: { ...state.comments, [id]: (state.comments[id] || 0) + 1 },
-    likes: { ...state.likes }, // preserve likes
-    saved: { ...state.saved }, // preserve saved
+    likes: { ...state.likes }, 
+    saved: { ...state.saved }, 
   })),
 })); 

@@ -3,8 +3,8 @@ import { View, Text, Image, Pressable } from 'react-native';
 import type { Post } from '../../types/post';
 import { postCardStyles } from './styles/PostCard.styles';
 import moment from 'moment';
-import { useFeedStore } from '../../store/useFeedStore';
 import { FontAwesome, Feather, MaterialIcons } from '@expo/vector-icons';
+import { usePostCard } from './hooks/usePostCard';
 
 interface PostCardProps {
   post: Post;
@@ -12,30 +12,25 @@ interface PostCardProps {
 
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
   const {
-    likes,
-    saved,
-    comments,
+    isLiked,
+    isSaved,
+    commentCount,
     toggleLike,
     toggleSave,
     addComment,
-  } = useFeedStore();
+    avatarUrl,
+    imageError,
+    setImageError,
+    fallbackImage,
+    imageUrl,
+  } = usePostCard({ post });
 
-  const isLiked = likes[post.id] ?? post.liked;
-  const isSaved = saved[post.id] ?? post.saved;
-  const commentCount = (comments[post.id] ?? post.comments);
-
-  console.log('PostCard post:', post);
-
-  // Fallback image for testing
-  const fallbackImage = 'https://placekitten.com/400/300';
-  const imageUrl = post.image && post.image.startsWith('http') ? post.image : fallbackImage;
-  const [imageError, setImageError] = React.useState(false);
 
   return (
     <View style={postCardStyles.container}>
       <View style={postCardStyles.header}>
         <Image
-          source={{ uri: post.avatar }}
+          source={{ uri: avatarUrl }}
           style={postCardStyles.avatar}
           accessibilityLabel={`${post.name} profile picture`}
         />
