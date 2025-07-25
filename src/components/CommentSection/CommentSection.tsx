@@ -8,6 +8,7 @@ import {
   Modal,
   Dimensions,
   SafeAreaView,
+  Image,
 } from "react-native";
 import moment from "moment";
 import { useCommentSection } from "./hooks/useCommentSection";
@@ -33,12 +34,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   const renderItem = ({ item }: { item: Comment }) => (
     <View style={commentSectionStyles.commentItem}>
       <View style={commentSectionStyles.avatar}>
-        <Text
+        <Image
+          source={{ uri: item.avatar }}
+          style={commentSectionStyles.avatar}
           accessibilityLabel={`${item.user} avatar`}
-          style={{ fontSize: 18, textAlign: "center", lineHeight: 36 }}
-        >
-          {item.avatar ? " " : "👤"}
-        </Text>
+        />
       </View>
       <View style={{ flex: 1 }}>
         <Text style={{ fontWeight: "bold" }}>{item.user}</Text>
