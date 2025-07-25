@@ -5,7 +5,7 @@ export interface PostActionsState {
   posts: Post[];
   setPosts: (posts: Post[]) => void;
   setPostsAndSaved: (posts: Post[]) => void;
-  likes: Record<string, boolean>; // legacy, will be replaced
+  likes: Record<string, boolean>;
   saved: Record<string, boolean>;
   comments: Record<string, number>;
   likeCounts: Record<string, number>;
@@ -35,7 +35,7 @@ export const useFeedStore = create<PostActionsState>((set, get) => ({
       ...Object.fromEntries(posts.map((p) => [p.id, p.liked ?? false]))
     }
   })),
-  likes: {}, // legacy
+  likes: {},
   saved: {},
   comments: {},
   likeCounts: {},
