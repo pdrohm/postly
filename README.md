@@ -13,7 +13,6 @@ Postly is a modern social app built with Expo, React Native, and TypeScript. It 
 - [State Management](#state-management)
 - [API Layer](#api-layer)
 - [UI & Accessibility](#ui--accessibility)
-- [Testing](#testing)
 - [Getting Started](#getting-started)
 - [Running the App](#running-the-app)
 - [Development Workflow](#development-workflow)
@@ -46,7 +45,6 @@ Postly is a modern social app built with Expo, React Native, and TypeScript. It 
 - **@gorhom/bottom-sheet** for modals
 - **React Native Gesture Handler** and **Reanimated** for smooth UI
 - **Expo Development Client** for native development
-- **Jest** and **React Testing Library** (recommended for tests)
 
 ---
 
@@ -314,7 +312,6 @@ For development with native modules:
 - **Components**: Functional components with React Hooks only
 - **State Management**: Zustand for global state, React Query for server state
 - **Styling**: Modular styles per component
-- **Testing**: Unit tests for logic, component tests for UI
 - **Accessibility**: WCAG compliance, proper labels and roles
 
 ---
