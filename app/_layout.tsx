@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tabs } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StatusBar } from 'react-native';
@@ -6,10 +6,27 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView as SafeAreaViewContext } from 'react-native-safe-area-context';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import * as SplashScreen from 'expo-splash-screen';
+
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
+  useEffect(() => {
+    const hideSplashScreen = async () => {
+      try {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await SplashScreen.hideAsync();
+      } catch (error) {
+        console.warn('Error hiding splash screen:', error);
+      }
+    };
+
+    hideSplashScreen();
+  }, []);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>

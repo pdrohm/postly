@@ -15,6 +15,9 @@ Postly is a modern social app built with Expo, React Native, and TypeScript. It 
 - [UI & Accessibility](#ui--accessibility)
 - [Testing](#testing)
 - [Getting Started](#getting-started)
+- [Running the App](#running-the-app)
+- [Development Workflow](#development-workflow)
+- [Building for Production](#building-for-production)
 - [Contribution & Code Quality](#contribution--code-quality)
 
 ---
@@ -27,6 +30,7 @@ Postly is a modern social app built with Expo, React Native, and TypeScript. It 
 - Modular, accessible UI components
 - Global state management with Zustand
 - TypeScript strict typing throughout
+- Custom app icon and splash screen
 
 ---
 
@@ -41,6 +45,7 @@ Postly is a modern social app built with Expo, React Native, and TypeScript. It 
 - **Axios** for API requests
 - **@gorhom/bottom-sheet** for modals
 - **React Native Gesture Handler** and **Reanimated** for smooth UI
+- **Expo Development Client** for native development
 - **Jest** and **React Testing Library** (recommended for tests)
 
 ---
@@ -64,6 +69,12 @@ src/
   screens/              # Screen containers (Home, Profile, Saved)
   store/                # Global state (Zustand)
   types/                # TypeScript types/interfaces
+
+assets/
+  icon.png              # App icon
+  adaptive-icon.png     # Android adaptive icon
+  splash-icon.png       # Splash screen image
+  favicon.png           # Web favicon
 ```
 
 ---
@@ -112,27 +123,179 @@ Postly uses **Expo Router** for file-based navigation:
 - All touchable elements have accessibility labels.
 - Styles are modularized per component.
 
-
+---
 
 ## Getting Started
 
-1. **Install dependencies:**
+### Prerequisites
+
+- **Node.js** (LTS version recommended)
+- **npm** or **yarn**
+- **Expo CLI** (`npm install -g expo-cli`)
+- **Xcode** (for iOS development)
+- **Android Studio** (for Android development)
+- **Git**
+
+### Installation
+
+1. **Clone the repository:**
+   ```sh
+   git clone <repository-url>
+   cd postly
+   ```
+
+2. **Install dependencies:**
    ```sh
    npm install
    ```
 
-2. **Run the app:**
+3. **Install Expo Development Client:**
    ```sh
-   npm start
+   npx expo install expo-dev-client
    ```
-   Or use:
-   - `npm run android`
-   - `npm run ios`
-   - `npm run web`
 
-3. **Project requirements:**
-   - Node.js (LTS recommended)
-   - Expo CLI (`npm install -g expo-cli`)
+---
+
+## Running the App
+
+### Option 1: Development Build (Recommended)
+
+This creates a native build with your custom app icon and splash screen:
+
+1. **Build and run on iOS:**
+   ```sh
+   npx expo run:ios
+   ```
+
+2. **Build and run on Android:**
+   ```sh
+   npx expo run:android
+   ```
+
+### Option 2: Expo Go (Quick Testing)
+
+For quick testing without custom native code:
+
+1. **Start the development server:**
+   ```sh
+   npx expo start
+   ```
+
+2. **Run on device/simulator:**
+   - **iOS Simulator**: Press `i`
+   - **Android Emulator**: Press `a`
+   - **Physical Device**: Scan QR code with Expo Go app
+
+### Option 3: Development Client
+
+For development with native modules:
+
+1. **Start with development client:**
+   ```sh
+   npx expo start
+   ```
+
+2. **Switch to development build:**
+   - Press `s` to switch to development build mode
+   - This will use your custom app icon and splash screen
+
+---
+
+## Development Workflow
+
+### Making Changes
+
+1. **Start development server:**
+   ```sh
+   npx expo start
+   ```
+
+2. **Make your changes** in the code
+
+3. **Test changes:**
+   - **Hot reload**: Changes appear automatically
+   - **Full reload**: Press `r` in terminal
+   - **Clear cache**: Press `shift+r` in terminal
+
+### Adding Native Dependencies
+
+1. **Install the package:**
+   ```sh
+   npx expo install <package-name>
+   ```
+
+2. **Rebuild native code:**
+   ```sh
+   npx expo prebuild --clean
+   ```
+
+3. **Run the app:**
+   ```sh
+   npx expo run:ios
+   # or
+   npx expo run:android
+   ```
+
+### Troubleshooting
+
+**Common Issues:**
+
+1. **Duplicate symbols error:**
+   - Remove conflicting packages (e.g., `react-native-worklets` vs `react-native-reanimated`)
+   - Run `npx expo prebuild --clean`
+
+2. **Unimplemented component error:**
+   - Install missing native dependencies
+   - Run `npx expo install <missing-package>`
+
+3. **Build failures:**
+   - Clear cache: `npx expo start --clear`
+   - Clean build: `npx expo prebuild --clean`
+
+---
+
+## Building for Production
+
+### EAS Build (Recommended)
+
+1. **Install EAS CLI:**
+   ```sh
+   npm install -g @expo/eas-cli
+   ```
+
+2. **Login to Expo:**
+   ```sh
+   eas login
+   ```
+
+3. **Configure EAS:**
+   ```sh
+   eas build:configure
+   ```
+
+4. **Build for production:**
+   ```sh
+   # iOS
+   eas build --platform ios
+   
+   # Android
+   eas build --platform android
+   
+   # Both
+   eas build --platform all
+   ```
+
+### Local Build
+
+1. **iOS Archive:**
+   ```sh
+   npx expo run:ios --configuration Release
+   ```
+
+2. **Android APK:**
+   ```sh
+   npx expo run:android --variant release
+   ```
 
 ---
 
@@ -145,6 +308,14 @@ Postly uses **Expo Router** for file-based navigation:
 - All async logic must handle loading, success, and error states.
 - All code must be manually reviewed before merging.
 - Commit in small, logical chunks.
+
+### Code Standards
+
+- **Components**: Functional components with React Hooks only
+- **State Management**: Zustand for global state, React Query for server state
+- **Styling**: Modular styles per component
+- **Testing**: Unit tests for logic, component tests for UI
+- **Accessibility**: WCAG compliance, proper labels and roles
 
 ---
 
