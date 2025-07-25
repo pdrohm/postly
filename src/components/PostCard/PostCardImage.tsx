@@ -20,7 +20,6 @@ const PostCardImage: React.FC<PostCardImageProps> = ({
   postName,
   doubleTapGesture,
 }) => {
-console.log('doubleTapGesture', doubleTapGesture)
   return (
     <GestureDetector gesture={doubleTapGesture}>
       <View>

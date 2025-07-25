@@ -17,8 +17,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ visible, onClose, postI
   const snapPoints = useMemo(() => ['60%', '90%'], []);
   const { input, setInput, submitting, comments, handleAddComment } = useCommentSection(postId);
 
-  console.log("visible", visible);
-
   const renderItem = ({ item }: { item: Comment }) => (
     <View style={commentSectionStyles.commentItem}>
       <View style={commentSectionStyles.avatar}>
