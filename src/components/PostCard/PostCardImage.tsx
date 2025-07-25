@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-native";
+import { Image, View } from "react-native";
 import { GestureDetector, Gesture } from "react-native-gesture-handler";
 import { postCardImageStyles } from "./styles/PostCardImage.styles";
 
@@ -19,18 +19,23 @@ const PostCardImage: React.FC<PostCardImageProps> = ({
   setImageError,
   postName,
   doubleTapGesture,
-}) => (
-  <GestureDetector gesture={doubleTapGesture}>
-    <Image
-      source={{ uri: imageError ? fallbackImage : imageUrl }}
-      style={postCardImageStyles.image}
-      accessibilityLabel={`Post image by ${postName}`}
-      onError={(e) => {
-        setImageError(true);
-        console.error("Image failed to load:", imageUrl, e.nativeEvent);
-      }}
-    />
+}) => {
+console.log('doubleTapGesture', doubleTapGesture)
+  return (
+    <GestureDetector gesture={doubleTapGesture}>
+      <View>
+      <Image
+        source={{ uri: imageError ? fallbackImage : imageUrl }}
+        style={postCardImageStyles.image}
+        accessibilityLabel={`Post image by ${postName}`}
+        onError={(e) => {
+          setImageError(true);
+          console.error("Image failed to load:", imageUrl, e.nativeEvent);
+        }}
+      />
+    </View>
   </GestureDetector>
 );
+}
 
 export default PostCardImage; 

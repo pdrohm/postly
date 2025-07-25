@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { View } from "react-native";
 import type { Post } from "../../types/post";
 import { postCardStyles } from "./styles/PostCard.styles";
@@ -37,11 +37,14 @@ const PostCard: React.FC<PostCardProps> = ({ post, onCommentPress }) => {
 
   const headerProps = usePostCardHeader(post);
 
-  const doubleTapGesture = Gesture.Tap()
-    .numberOfTaps(2)
-    .onStart(() => {
-      toggleLike(post.id);
-    });
+  const doubleTapGesture = useMemo(() =>
+    Gesture.Tap()
+      .numberOfTaps(2)
+      .onStart(() => {
+        toggleLike(post.id);
+      })
+      .runOnJS(true)
+  , [post.id, toggleLike]);
 
   const postCardImageProps = usePostCardImage({
     imageUrl,

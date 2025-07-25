@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchPosts } from '../../../api/postsApi';
-import { useFeedStore } from '../../../store/useFeedStore';
-import type { Post } from '../../../types/post';
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchPosts } from "../../../api/postsApi";
+import { useFeedStore } from "../../../store/useFeedStore";
+import type { Post } from "../../../types/post";
 
 export function useHomeScreen() {
+  const [commentSectionVisible, setCommentSectionVisible] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
+
   const { posts, setPostsAndSaved } = useFeedStore();
   const {
     data: fetchedPosts,
@@ -12,7 +15,7 @@ export function useHomeScreen() {
     isError,
     refetch,
   } = useQuery<Post[]>({
-    queryKey: ['posts'],
+    queryKey: ["posts"],
     queryFn: fetchPosts,
   });
 
@@ -22,10 +25,25 @@ export function useHomeScreen() {
     }
   }, [fetchedPosts, setPostsAndSaved]);
 
+
+  const handleCommentPress = (postId: string) => {
+    setSelectedPostId(postId);
+    setCommentSectionVisible(true);
+  };
+
+  const handleCloseCommentSection = () => {
+    setCommentSectionVisible(false);
+    setSelectedPostId(null);
+  };
+
   return {
     posts,
     isLoading,
     isError,
     refetch,
+    commentSectionVisible,
+    handleCommentPress,
+    handleCloseCommentSection,
+    selectedPostId,
   };
-} 
+}
