@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { View } from "react-native";
 import type { Post } from "../../types/post";
 import { postCardStyles } from "./styles/PostCard.styles";
@@ -39,13 +39,11 @@ const PostCard: React.FC<PostCardProps> = ({ post, onCommentPress }) => {
   const headerProps = usePostCardHeader(post);
 
   const [showHeart, setShowHeart] = useState(false);
-  // Helper to trigger heart animation
   const triggerHeart = () => {
-    setShowHeart(false); // reset in case it's still true
-    setTimeout(() => setShowHeart(true), 10); // ensure re-render
+    setShowHeart(false);
+    setTimeout(() => setShowHeart(true), 10);
   };
 
-  // Double tap gesture triggers like and heart
   const doubleTapGesture = useMemo(() =>
     Gesture.Tap()
       .numberOfTaps(2)
@@ -58,7 +56,6 @@ const PostCard: React.FC<PostCardProps> = ({ post, onCommentPress }) => {
       .runOnJS(true)
   , [post.id, toggleLike, isLiked]);
 
-  // Like button triggers like and heart
   const handleLikePress = () => {
     if (!isLiked) {
       triggerHeart();
@@ -66,8 +63,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, onCommentPress }) => {
     toggleLike(post.id);
   };
 
-  // Hide heart after animation duration
-  React.useEffect(() => {
+  useEffect(() => {
     let timer: NodeJS.Timeout;
     if (showHeart) {
       timer = setTimeout(() => setShowHeart(false), 800);
