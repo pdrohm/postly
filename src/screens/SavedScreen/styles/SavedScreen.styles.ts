@@ -9,4 +9,15 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  headerContainer: {
+    paddingTop: 24,
+    paddingBottom: 12,
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#222',
+  },
 }); 
