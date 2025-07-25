@@ -1,6 +1,10 @@
 import { create } from 'zustand';
+import type { Post } from '../types/post';
 
 interface PostActionsState {
+  posts: Post[];
+  setPosts: (posts: Post[]) => void;
+  setPostsAndSaved: (posts: Post[]) => void;
   likes: Record<string, boolean>;
   saved: Record<string, boolean>;
   comments: Record<string, number>;
@@ -10,6 +14,15 @@ interface PostActionsState {
 }
 
 export const useFeedStore = create<PostActionsState>((set) => ({
+  posts: [],
+  setPosts: (posts) => set({ posts }),
+  setPostsAndSaved: (posts) => set((state) => ({
+    posts,
+    saved: {
+      ...state.saved,
+      ...Object.fromEntries(posts.filter((p) => p.saved).map((p) => [p.id, true]))
+    }
+  })),
   likes: {},
   saved: {},
   comments: {},

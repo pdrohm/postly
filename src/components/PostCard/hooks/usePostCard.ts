@@ -15,10 +15,7 @@ export function usePostCard({post}: {post: Post}) {
     const isLiked = likes[post.id] ?? post.liked;
     const isSaved = saved[post.id] ?? post.saved;
     const commentCount = (comments[post.id] ?? post.comments);
-    const [imageError, setImageError] = useState(false);
-  
-    console.log('PostCard post:', post);
-  
+    const [imageError, setImageError] = useState(false);  
 
     const avatarUrl = `https://i.pravatar.cc/304?u=${post.id}`;
     const imageUrl = `https://picsum.photos/600/400?random=${post.id}`;

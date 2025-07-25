@@ -1,10 +1,13 @@
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPosts } from '../../../api/postsApi';
+import { useFeedStore } from '../../../store/useFeedStore';
 import type { Post } from '../../../types/post';
 
 export function useHomeScreen() {
+  const { posts, setPostsAndSaved } = useFeedStore();
   const {
-    data: posts = [],
+    data: fetchedPosts,
     isLoading,
     isError,
     refetch,
@@ -12,6 +15,12 @@ export function useHomeScreen() {
     queryKey: ['posts'],
     queryFn: fetchPosts,
   });
+
+  useEffect(() => {
+    if (fetchedPosts && Array.isArray(fetchedPosts)) {
+      setPostsAndSaved(fetchedPosts);
+    }
+  }, [fetchedPosts, setPostsAndSaved]);
 
   return {
     posts,

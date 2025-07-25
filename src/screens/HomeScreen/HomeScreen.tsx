@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, FlatList, ActivityIndicator, Text } from 'react-native';
+import { View, FlatList, Text } from 'react-native';
 import { useHomeScreen } from './hooks/useHomeScreen';
 import type { Post } from '../../types/post';
-import PostCard from '../../components/PostCard/PostCard'; // To be implemented
+import PostCard from '../../components/PostCard/PostCard';
 import { PostCardSkeleton } from '../../components/PostCard/PostCardSkeleton';
 import { homeScreenStyles } from './styles/HomeScreen.styles';
 
