@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useFeedStore } from "../../../store/useFeedStore";
 import { Post } from "../../../types/post";
+import { AVATAR_URLS, IMAGE_URLS } from "../../../constants";
 
 export function usePostCard({post}: {post: Post}) {
     const {
@@ -21,9 +22,8 @@ export function usePostCard({post}: {post: Post}) {
     const latestComment = commentsForPost.length > 0 ? commentsForPost[commentsForPost.length - 1] : undefined;
     const [imageError, setImageError] = useState(false);  
 
-    const avatarUrl = `https://i.pravatar.cc/304?u=${post.id}`;
-    const imageUrl = `https://picsum.photos/600/400?random=${post.id}`;
-    const fallbackImage = 'https://placekitten.com/400/300';
+    const imageUrl = IMAGE_URLS.POST(post.id);
+    const fallbackImage = IMAGE_URLS.FALLBACK;
   
   
   return {
@@ -38,7 +38,6 @@ export function usePostCard({post}: {post: Post}) {
     toggleSave,
     addComment,
     fallbackImage,
-    avatarUrl,
     latestComment,
   };
 }

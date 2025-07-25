@@ -3,6 +3,7 @@ import { Drawer } from 'expo-router/drawer';
 import { View, Text, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
+import { AVATAR_URLS, APP_CONSTANTS } from '../../src/constants';
 
 function CustomDrawerContent(props: any) {
   return (
@@ -14,14 +15,14 @@ function CustomDrawerContent(props: any) {
       <View style={styles.profileHeader}>
         <View style={styles.avatarContainer}>
           <Image
-            source={{ uri: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face' }}
+            source={{ uri: AVATAR_URLS.PROFILE }}
             style={styles.avatar}
           />
           <View style={styles.onlineIndicator} />
         </View>
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>John Doe</Text>
-          <Text style={styles.userEmail}>john.doe@example.com</Text>
+          <Text style={styles.userName}>{APP_CONSTANTS.DEFAULT_USER_NAME}</Text>
+          <Text style={styles.userEmail}>{APP_CONSTANTS.DEFAULT_USER_EMAIL}</Text>
         </View>
       </View>
 

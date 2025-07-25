@@ -28,7 +28,6 @@ const PostCard: React.FC<PostCardProps> = ({ post, onCommentPress }) => {
     toggleLike,
     toggleSave,
     addComment,
-    avatarUrl,
     imageError,
     setImageError,
     fallbackImage,

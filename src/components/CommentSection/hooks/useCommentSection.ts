@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useFeedStore } from '../../../store/useFeedStore';
 import type { Comment } from '../../../types/post';
 import type { PostActionsState } from '../../../store/useFeedStore';
+import { AVATAR_URLS } from '../../../constants';
 
 export function useCommentSection(postId: string) {
   const [input, setInput] = useState('');
@@ -17,7 +18,7 @@ export function useCommentSection(postId: string) {
       id: Math.random().toString(36).slice(2),
       postId,
       user: 'You',
-      avatar: `https://i.pravatar.cc/150?u=you`,
+      avatar: AVATAR_URLS.PROFILE,
       text: input,
       createdAt: new Date().toISOString(),
     };
