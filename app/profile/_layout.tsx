@@ -34,7 +34,7 @@ function CustomDrawerContent(props: any) {
       <View style={styles.exitContainer}>
         <TouchableOpacity
           style={styles.exitButton}
-          onPress={() => Alert.alert('Exit', 'Implement logout/exit logic here.')}
+          onPress={() => Alert.alert('Exit', 'TODO: Implement logout/exit logic.')}
           accessibilityLabel="Exit"
           accessibilityRole="button"
         >
