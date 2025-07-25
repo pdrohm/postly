@@ -12,6 +12,7 @@ import PostCardActions from "./PostCardActions";
 import { usePostCardActions } from "./hooks/usePostCardActions";
 import PostCardFooter from "./PostCardFooter";
 import { usePostCardFooter } from "./hooks/usePostCardFooter";
+import AnimatedHeart from "./AnimatedHeart";
 
 interface PostCardProps {
   post: Post;
@@ -37,14 +38,42 @@ const PostCard: React.FC<PostCardProps> = ({ post, onCommentPress }) => {
 
   const headerProps = usePostCardHeader(post);
 
+  const [showHeart, setShowHeart] = useState(false);
+  // Helper to trigger heart animation
+  const triggerHeart = () => {
+    setShowHeart(false); // reset in case it's still true
+    setTimeout(() => setShowHeart(true), 10); // ensure re-render
+  };
+
+  // Double tap gesture triggers like and heart
   const doubleTapGesture = useMemo(() =>
     Gesture.Tap()
       .numberOfTaps(2)
       .onStart(() => {
+        if (!isLiked) {
+          triggerHeart();
+        }
         toggleLike(post.id);
       })
       .runOnJS(true)
-  , [post.id, toggleLike]);
+  , [post.id, toggleLike, isLiked]);
+
+  // Like button triggers like and heart
+  const handleLikePress = () => {
+    if (!isLiked) {
+      triggerHeart();
+    }
+    toggleLike(post.id);
+  };
+
+  // Hide heart after animation duration
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showHeart) {
+      timer = setTimeout(() => setShowHeart(false), 800);
+    }
+    return () => timer && clearTimeout(timer);
+  }, [showHeart]);
 
   const postCardImageProps = usePostCardImage({
     imageUrl,
@@ -60,7 +89,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, onCommentPress }) => {
     isSaved,
     likeCount,
     commentCount,
-    onLikePress: () => toggleLike(post.id),
+    onLikePress: handleLikePress,
     onCommentPress: () => onCommentPress && onCommentPress(post.id),
     onSavePress: () => toggleSave(post.id),
   });
@@ -70,7 +99,10 @@ const PostCard: React.FC<PostCardProps> = ({ post, onCommentPress }) => {
   return (
     <View style={postCardStyles.container}>
       <PostCardHeader {...headerProps} />
-      <PostCardImage {...postCardImageProps} />
+      <View style={{ position: "relative" }}>
+        <PostCardImage {...postCardImageProps} />
+        {showHeart && <AnimatedHeart trigger={showHeart} />}
+      </View>
       <PostCardActions {...postCardActionsProps} />
       <PostCardFooter {...postCardFooterProps} />
     </View>
