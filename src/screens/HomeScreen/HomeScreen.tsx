@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { View, FlatList, Text } from "react-native";
 import { useHomeScreen } from "./hooks/useHomeScreen";
 import type { Post } from "../../types/post";
@@ -6,6 +6,8 @@ import PostCard from "../../components/PostCard/PostCard";
 import { PostCardSkeleton } from "../../components/PostCard/PostCardSkeleton";
 import { homeScreenStyles } from "./styles/HomeScreen.styles";
 import CommentSection from "../../components/CommentSection/CommentSection";
+
+const POST_CARD_HEIGHT = 300;
 
 const HomeScreen: React.FC = () => {
   const {
@@ -19,6 +21,15 @@ const HomeScreen: React.FC = () => {
     selectedPostId,
   } = useHomeScreen();
 
+  const renderItem = useCallback(
+    ({ item }: { item: Post }) => (
+      <PostCard post={item} onCommentPress={handleCommentPress} />
+    ),
+    [handleCommentPress]
+  );
+
+  const keyExtractor = useCallback((item: Post) => item.id, []);
+
   if (isLoading) {
     return (
       <FlatList
@@ -27,6 +38,10 @@ const HomeScreen: React.FC = () => {
         keyExtractor={(item) => String(item)}
         renderItem={() => <PostCardSkeleton />}
         contentContainerStyle={homeScreenStyles.listContent}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews
       />
     );
   }
@@ -47,11 +62,14 @@ const HomeScreen: React.FC = () => {
       <FlatList
         style={homeScreenStyles.container}
         data={posts}
-        keyExtractor={(item: Post) => item.id}
-        renderItem={({ item }) => (
-          <PostCard post={item} onCommentPress={handleCommentPress} />
-        )}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
         contentContainerStyle={homeScreenStyles.listContent}
+        initialNumToRender={10}
+        maxToRenderPerBatch={10}
+        windowSize={10}
+        removeClippedSubviews
+        onEndReachedThreshold={0.5}
       />
       <CommentSection
         visible={commentSectionVisible}

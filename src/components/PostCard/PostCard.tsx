@@ -105,4 +105,4 @@ const PostCard: React.FC<PostCardProps> = ({ post, onCommentPress }) => {
   );
 };
 
-export default PostCard;
+export default React.memo(PostCard);
